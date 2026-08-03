@@ -3,9 +3,8 @@ Ele recebe esse nome porque os maiores elementos "flutuam" gradualmente para o f
 Como o Bubble Sort funciona? O algoritmo compara pares de elementos vizinhos do início ao fim da lista: se o elemento da esquerda for maior que o da direita, eles trocam de lugar. Ele avança um passo e repete a comparação para o próximo par.Ao final da primeira passagem completa, o maior elemento da lista com certeza estará travado na última posição. O processo se repete para o restante da lista até que nenhuma troca seja necessária. 
 
 Bubble Sort Implementações:
-
+```cpp
 // Função que ordena um vetor de inteiros usando variáveis temporárias
-
 void bubbleSort(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         bool trocou = false; // Flag para otimizar caso o vetor já esteja ordenado
@@ -46,6 +45,7 @@ void bubbleSort(int arr[], int n) {
         }
     }
 }
+```cpp
 
 
 Exemplos de Uso:
