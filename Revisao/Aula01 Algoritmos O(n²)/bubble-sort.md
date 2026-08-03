@@ -5,6 +5,7 @@ Como o Bubble Sort funciona? O algoritmo compara pares de elementos vizinhos do 
 Bubble Sort Implementações:
 
 // Função que ordena um vetor de inteiros usando variáveis temporárias
+
 void bubbleSort(int arr[], int n) {
     for (int i = 0; i < n - 1; i++) {
         bool trocou = false; // Flag para otimizar caso o vetor já esteja ordenado
@@ -26,6 +27,7 @@ void bubbleSort(int arr[], int n) {
     }
 }
 // Com swap ao invés de variáveis temporárias
+
 #include <utility> // Para swap
 
 void bubbleSort(int arr[], int n) {
