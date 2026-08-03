@@ -7,6 +7,13 @@ Começamos considerando o primeiro elemento (índice 0) como uma lista já orden
 3.Inserimos a chave no espaço vago.  
 Repetimos até o final do vetor.
 
+
+Insertion Sort  
+Melhor caso: O(n) (vetor já ordenado, faz apenas comparações).  
+Caso médio: O(n²).  
+Pior caso: O(n²) (vetor em ordem inversa, deslocando muitos elementos).
+
+
 ```cpp
 void insertionSort(int arr[], int n) {
     for (int i = 1; i < n; i++) {

@@ -2,6 +2,13 @@ O Bubble Sort (ou "Ordenação por Bolha") é um dos algoritmos de ordenação m
 Ele recebe esse nome porque os maiores elementos "flutuam" gradualmente para o final do vetor a cada passagem, exatamente como bolhas de ar subindo na água.
 Como o Bubble Sort funciona? O algoritmo compara pares de elementos vizinhos do início ao fim da lista: se o elemento da esquerda for maior que o da direita, eles trocam de lugar. Ele avança um passo e repete a comparação para o próximo par.Ao final da primeira passagem completa, o maior elemento da lista com certeza estará travado na última posição. O processo se repete para o restante da lista até que nenhuma troca seja necessária. 
 
+
+Bubble Sort  
+Melhor caso: O(n) (quando o vetor já está ordenado e a implementação usa uma flag para detectar que nenhuma troca foi feita).  
+Caso médio: O(n²).  
+Pior caso: O(n²) (vetor em ordem inversa).
+
+
 Bubble Sort Implementações:
 ```cpp
 // Função que ordena um vetor de inteiros usando variáveis temporárias
