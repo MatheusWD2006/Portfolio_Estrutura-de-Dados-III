@@ -45,7 +45,7 @@ void bubbleSort(int arr[], int n) {
         }
     }
 }
-cpp```
+```
 
 
 Exemplos de Uso:
