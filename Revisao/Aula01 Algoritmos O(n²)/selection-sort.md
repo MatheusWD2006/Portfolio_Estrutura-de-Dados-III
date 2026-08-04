@@ -13,7 +13,6 @@ O algoritmo possui complexidade:
 Melhor caso: O(n²)  
 Caso médio: O(n²)  
 Pior caso: O(n²)  
-Memória: O(1), pois ordena no próprio vetor.
 
 ```cpp
 
