@@ -36,6 +36,8 @@ O trabalho computacional principal ocorre na etapa de combinação, realizada pe
 ```cpp
 #include <iostream>
 
+using namespace std;
+
 // Função auxiliar para intercalar (merge) duas metades ordenadas
 void merge(int arr[], int inicio, int meio, int fim) {
     int n1 = meio - inicio + 1;
@@ -110,20 +112,20 @@ int main() {
     int arr[] = {12, 11, 13, 5, 6, 7};
     int n = sizeof(arr) / sizeof(arr[0]);
 
-    std::cout << "Arranjo original: ";
+    cout << "Arranjo original: ";
     for (int i = 0; i < n; i++) {
-        std::cout << arr[i] << " ";
+        cout << arr[i] << " ";
     }
-    std::cout << "\n";
+    cout << "\n";
 
     // Chamada inicial cobrindo do índice 0 ao índice n - 1
     mergeSort(arr, 0, n - 1);
 
-    std::cout << "Arranjo ordenado: ";
+    cout << "Arranjo ordenado: ";
     for (int i = 0; i < n; i++) {
-        std::cout << arr[i] << " ";
+        cout << arr[i] << " ";
     }
-    std::cout << "\n";
+    cout << "\n";
 
     return 0;
 }
