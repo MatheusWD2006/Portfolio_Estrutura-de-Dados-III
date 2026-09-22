@@ -15,28 +15,17 @@ A abordagem segue **três passos essenciais** em cada nível da recursão:
 
 ## 2. O Algoritmo Merge Sort
 
-O **Merge Sort** é um algoritmo de ordenação clássico fundamentado na técnica de divisão e conquista. Para ordenar um arranjo de $n$ elementos, o algoritmo opera da seguinte forma:
+O **Merge Sort** é um algoritmo de ordenação clássico fundamentado na técnica de divisão e conquista. Para ordenar um arranjo de $n$ elementos, o algoritmo opera com a abordagem da divisão e conquista.
 
-* **Dividir:** Divide a sequência de $n$ elementos em duas subsequências de $n/2$ elementos cada.
-* **Conquistar:** Ordena as duas subsequências recursivamente usando o próprio *Merge Sort*. Quando uma subsequência atinge o tamanho $1$ (caso base), ela já está ordenada por definição.
-* **Combinar:** Intercala (*merge*) as duas subsequências ordenadas em uma única sequência totalmente ordenada.
 
 ### A Operação Principal (`MERGE`)
 O trabalho computacional principal ocorre na etapa de combinação, realizada pelo procedimento auxiliar `MERGE`. Como as duas metades já estão ordenadas, o procedimento as percorre simultaneamente, comparando os elementos das pontas e construindo a sequência final ordenada em tempo linear.
 
 ### Complexidade e Análise Assintótica
 
-| Algoritmo | Complexidade (Pior Caso) | Abordagem |
-| :--- | :---: | :--- |
-| **Insertion Sort** | $\mathcal{O}(n^2)$ | Incremental |
-| **Merge Sort** | $\mathcal{O}(n \lg n)$ | Divisão e Conquista |
-
-* Devido ao fator $\lg n$ crescer muito mais devagar do que $n$, o **Merge Sort** supera substancialmente o *Insertion Sort* para entradas grandes ($n$ elevado).
+Melhor, pior e médio com mesma complexidade O(n log n)
 
 ```cpp
-#include <iostream>
-
-using namespace std;
 
 // Função auxiliar para intercalar (merge) duas metades ordenadas
 void merge(int arr[], int inicio, int meio, int fim) {
@@ -106,27 +95,5 @@ void mergeSort(int arr[], int inicio, int fim) {
 
     // Combina as duas metades ordenadas
     merge(arr, inicio, meio, fim);
-}
-
-int main() {
-    int arr[] = {12, 11, 13, 5, 6, 7};
-    int n = sizeof(arr) / sizeof(arr[0]);
-
-    cout << "Arranjo original: ";
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << "\n";
-
-    // Chamada inicial cobrindo do índice 0 ao índice n - 1
-    mergeSort(arr, 0, n - 1);
-
-    cout << "Arranjo ordenado: ";
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << "\n";
-
-    return 0;
 }
 ```
