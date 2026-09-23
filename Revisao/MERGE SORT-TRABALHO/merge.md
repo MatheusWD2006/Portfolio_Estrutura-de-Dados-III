@@ -1,5 +1,14 @@
 # Merge Sort
 
+### Disciplina: Estrutura de Dados III
+### Trabalho de Revisão
+
+### Alunos:
+- Matheus Witte Ditz
+- Gabriel Rizzatto
+- Andrey Dalla Costa
+
+
 ## Origem e história
 
 O Merge Sort foi criado por John von Neumann em 1945. A ideia de dividir um problema em subproblemas menores, resolvê-los recursivamente e depois combinar (fazer o *merge*) se tornou um dos exemplos mais clássicos do paradigma de divisão e conquista (*divide and conquer*), influenciando algoritmos posteriores.
@@ -16,7 +25,7 @@ O Merge Sort é um algoritmo de divisão e conquista. Isso significa que ele res
 
 Dado um vetor de `n` elementos:
 
-1. Se o vetor tem 0 ou 1 elemento,já está ordenado. Esse é o caso base da recursão.
+1. Se o vetor tem 0 ou 1 elemento, já está ordenado. Esse é o caso base da recursão.
 2. Caso contrário, divide-se o vetor em duas metades: esquerda e direita.
 3. Aplica-se o Merge Sort recursivamente em cada metade.
 4. As duas metades ordenadas são mescladas: compara-se o primeiro elemento de cada metade, coloca-se o menor no vetor de saída e repete-se o processo até que todos os elementos estejam em ordem.
@@ -36,17 +45,6 @@ A sequência funciona assim:
 6. O processo se repete até sobrar um único monte, totalmente ordenado.
 
 A parte de dividir o monte corresponde à divisão. Nessa etapa, ninguém organiza nada: apenas reparte as cartas. A parte de juntar comparando as cartas corresponde ao *merge*, que é quando a ordenação realmente acontece.
-
-### Exemplo: `[6, 3, 8, 2]`
-
-1. Divide `[6, 3, 8, 2]` em `[6, 3]` e `[8, 2]`.
-2. Divide `[6, 3]` em `6` e `3`, e `[8, 2]` em `8` e `2`.
-3. Cada parte tem apenas um elemento.
-4. Compara `6` e `3`, formando `[3, 6]`.
-5. Compara `8` e `2`, formando `[2, 8]`.
-6. Por fim, compara `[3, 6]` e `[2, 8]`, formando `[2, 3, 6, 8]`.
-
-> Cada "encontro de dois montes" é um *merge* separado. No exemplo, o *merge* acontece três vezes: duas vezes juntando pares de cartas e uma vez juntando os dois montes de duas cartas no vetor final.
 
 ## Complexidade
 
@@ -150,4 +148,41 @@ void mergeSort(int arr[], int inicio, int fim) {
     merge(arr, inicio, meio, fim);
 }
 
+```
+
+### Exemplo: `[6, 3, 8, 2]`
+
+1. Divide `[6, 3, 8, 2]` em `[6, 3]` e `[8, 2]`.
+2. Divide `[6, 3]` em `6` e `3`, e `[8, 2]` em `8` e `2`.
+3. Cada parte tem apenas um elemento.
+4. Compara `6` e `3`, formando `[3, 6]`.
+5. Compara `8` e `2`, formando `[2, 8]`.
+6. Por fim, compara `[3, 6]` e `[2, 8]`, formando `[2, 3, 6, 8]`.
+
+> Cada "encontro de dois montes" é um *merge* separado. No exemplo, o *merge* acontece três vezes no vetor final, juntando os elementos soltos duas vezes e os pares uma.
+
+### Exemplo com chamadas recursivas
+
+Considere o vetor `[8, 3, 5]`. O elemento `5`, sozinho, representa um caso base e não precisa ser alterado. Quem decide juntar o `5` com o par `[3, 8]` é a chamada `mergeSort(arr, 0, 2)`, ou seja, a chamada que recebe o array inteiro, onde o início é 0 e o fim é 2.
+
+Essa chamada espera o retorno de `mergeSort(arr, 0, 1)` e de `mergeSort(arr, 2, 2)`. Primeiro, `mergeSort(arr, 0, 1)` chama `mergeSort(arr, 0, 0)`, que retorna `[3]`, e `mergeSort(arr, 1, 1)`, que retorna `[8]`. Depois, `mergeSort(arr, 0, 1)` executa `merge(arr, 0, 0, 1)`, juntando `[3]` e `[8]` para formar `[3, 8]`. Já `mergeSort(arr, 2, 2)` representa o caso base do elemento `5`. Só depois que essas duas chamadas retornam é que `mergeSort(arr, 0, 2)` executa `merge(arr, 0, 1, 2)` formando `[3, 5, 8]`.
+
+O erro mais comum ao analisar esse processo é observar apenas as chamadas "filhas" e esquecer que cada uma delas também é "pai" de outras duas. Não existe uma categoria fixa de "chamada pai" e "chamada filha": isso depende do ponto de vista.
+
+Como nesse exemplo `[8, 3, 5]`, `mergeSort(arr, 0, 2)` é pai de `mergeSort(arr, 0, 1)` e `mergeSort(arr, 2, 2)`. Porém, quando o foco muda para `mergeSort(arr, 0, 1)`, essa chamada passa a ser pai de suas próprias subchamadas. Isso se repete em cada nível até chegar ao caso base, que é a única chamada que não é pai de nenhuma outra. Lembrando que pai não é exatamente o termo correto, é apenas uma forma de explicar.
+
+Esse ponto de vista explica por que `merge` é chamado várias vezes ao longo da execução, e não apenas uma vez no final.
+
+### A ordem das chamadas
+
+O Merge Sort resolve um lado por vez, nunca os dois ao mesmo tempo.
+
+Usando a analogia das cartas, imagine que o baralho foi dividido em duas pilhas: uma à esquerda e outra à direita. O algoritmo resolve toda a pilha da esquerda antes de começar na pilha da direita. Só quando as duas pilhas maiores estão ordenadas é que elas são juntadas em um último *merge*.
+
+Isso é exatamente o que o código faz, e por isso a ordem das linhas importa:
+
+```cpp
+mergeSort(arr, inicio, meio);      // Resolve o lado esquerdo por completo primeiro
+mergeSort(arr, meio + 1, fim);     // Começa depois que o lado esquerdo termina
+merge(arr, inicio, meio, fim);     // Junta as duas metades por último
 ```
