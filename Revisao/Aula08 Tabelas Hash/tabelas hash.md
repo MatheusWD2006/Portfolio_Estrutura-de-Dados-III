@@ -233,3 +233,47 @@ Em `std::unordered_map`, `find` procura uma chave e `erase` a remove. O uso de `
 ## Resumo
 
 A tabela hash transforma chaves em índices para permitir acesso rápido aos dados. Suas operações têm custo médio **O(1)**, mas podem chegar a **O(n)** no pior caso, especialmente quando há muitas colisões. Em C++, é possível implementá-la manualmente ou usar `std::unordered_map` quando não houver necessidade de controlar os detalhes internos.
+
+## Algoritmos de Hash: Checksums e Criptografia
+
+Enquanto as tabelas hash utilizam funções simples (como o operador módulo) para mapear chaves para índices de forma extremamente rápida, outras áreas da computação exigem funções hash mais complexas. Estes algoritmos recebem dados de tamanho variável e retornam uma string de tamanho fixo (chamada de *digest* ou *hash*), sendo essenciais para **integridade de dados** e **segurança criptográfica**.
+
+Eles diferem das funções de tabela hash porque precisam minimizar (ou praticamente eliminar) as colisões e, no caso dos algoritmos criptográficos, ser irreversíveis e resistentes a adulterações maliciosas.
+
+### CRC32 (Cyclic Redundancy Check)
+
+- **Tamanho da saída:** 32 bits (4 bytes).
+- **Propósito principal:** Detecção de erros acidentais em transmissões ou armazenamento.
+- **Características:** É um algoritmo extremamente rápido e leve, não baseado em criptografia. É amplamente utilizado em protocolos de rede (como Ethernet) e na verificação de arquivos compactados (como `.zip` e `.png`).
+- **Segurança:** Nenhuma. É trivial gerar colisões intencionais. Nunca deve ser usado para proteger dados ou senhas.
+
+### MD5 (Message-Digest Algorithm 5)
+
+- **Tamanho da saída:** 128 bits (16 bytes, frequentemente representado como 32 caracteres hexadecimais).
+- **Propósito principal:** Verificação de integridade de arquivos (checksum rápido).
+- **Características:** Historicamente usado para armazenar senhas e assinaturas digitais, o MD5 foi **criptograficamente quebrado**. Atualmente, com poder computacional moderno, é fácil e rápido gerar duas mensagens diferentes que resultem no mesmo hash MD5 (ataque de colisão).
+- **Segurança:** Inseguro para criptografia. Hoje em dia, seu uso é recomendado apenas para verificar se um arquivo não foi corrompido durante um download padrão (onde não há suspeita de ataque).
+
+### SHA-256 (Secure Hash Algorithm 2)
+
+- **Tamanho da saída:** 256 bits (32 bytes, ou 64 caracteres hexadecimais).
+- **Propósito principal:** Criptografia, assinaturas digitais e autenticação (senhas com *salt*).
+- **Características:** Pertence à família SHA-2, projetada pela NSA. É considerado altamente seguro e é o padrão da indústria atual. É a base do protocolo de mineração do Bitcoin e é amplamente utilizado em certificados TLS/SSL na web.
+- **Segurança:** Alta. Com a tecnologia computacional atual, é estatisticamente inviável encontrar uma colisão ou reverter o hash para descobrir o dado original (ataque de preimagem).
+
+### SHA-512 (Secure Hash Algorithm 2)
+
+- **Tamanho da saída:** 512 bits (64 bytes, ou 128 caracteres hexadecimais).
+- **Propósito principal:** Criptografia de altíssima segurança.
+- **Características:** Também pertence à família SHA-2, mas opera de forma diferente na memória, utilizando blocos de dados de 1024 bits (contra 512 bits do SHA-256). 
+- **Desempenho (Detalhe de Arquitetura):** Um detalhe crucial para desenvolvedores C++ é que, em processadores modernos de **64 bits**, o cálculo do SHA-512 costuma ser **mais rápido** que o do SHA-256. Isso ocorre porque o SHA-512 utiliza instruções e registradores de 64 bits nativamente na CPU, otimizando o processamento via hardware.
+
+## Utilizando estes algoritmos em C++
+
+A biblioteca padrão do C++ (STL) oferece a estrutura genérica `std::hash<T>`, mas ela gera apenas hashes curtos (do tamanho do `size_t` da máquina, geralmente 64 bits) voltados exclusivamente para indexação rápida em `std::unordered_map` e `std::unordered_set`. Além disso, o `std::hash` não garante estabilidade; o hash da mesma string pode mudar entre diferentes execuções do programa para evitar ataques de colisão em tabelas hash (hash flooding).
+
+Para utilizar algoritmos padronizados como MD5, SHA ou CRC32, onde o resultado deve ser imutável e verificável, o C++ depende de bibliotecas externas consolidadas:
+
+1. **Crypto++ (CryptoPP):** Uma biblioteca nativa em C++ extremamente robusta e completa. É a escolha ideal quando se trabalha com paradigmas orientados a objetos para gerar hashes da família SHA.
+2. **OpenSSL (`<openssl/evp.h>`):** Escrita em C, mas é a biblioteca mais amplamente implementada e utilizada em projetos C++ no mercado para cálculo rápido de SHA-256, SHA-512 e MD5, devido à sua integração profunda com o sistema operacional e aceleração de hardware.
+3. **zlib (`<zlib.h>`):** A biblioteca padrão do Linux/Unix para compressão, que expõe uma função C nativa e super otimizada para o cálculo de `crc32`.
